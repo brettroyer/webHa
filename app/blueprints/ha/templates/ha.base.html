@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Smart Home Dashboard{% endblock %}</title>
+
+{% block styles %}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('ha.static', filename='css/style.css') }}">
+{% endblock %}
+
+</head>
+<body>
+  <div class="app">
+
+    {% block left_nav %}
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="avatar">BR</div>
+        <div>
+          <div style="font-weight:600">Brett Royer</div>
+          <div class="small">Welcome back</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="{{ url_for('ha.index') }}" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="{{ url_for('ha.rooms') }}"><i class="fa-solid fa-door-open"></i> Rooms</a>
+        <a href="{{ url_for('ha.recent') }}"><i class="fa-solid fa-clock-rotate-left"></i> Recent</a>
+        <a href="{{ url_for('ha.bookmark') }}"><i class="fa-solid fa-bookmark"></i> Bookmark</a>
+        <a href="{{ url_for('ha.notification') }}"><i class="fa-solid fa-bell"></i> Notification</a>
+        <a href="{{ url_for('ha.settings') }}"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+    </aside>
+    {% endblock %}
+
+
+    {% block content %}
+    <!--    Put Page Content Here!!-->
+    {% endblock %}
+
+    {% block right_nav %}
+    <aside class="panel">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">Temperature</div>
+          <div class="small">...</div>
+        </div>
+        <div class="knob">
+          <div class="dial" id="tempDial">22&deg;</div>
+        </div>
+      </div>
+
+      <div class="modes">
+        <div class="mode" data-mode="heat"> <i class="fa-solid fa-fire"></i><div class="small">Heating</div></div>
+        <div class="mode" data-mode="cool"> <i class="fa-solid fa-snowflake"></i><div class="small">Cooling</div></div>
+        <div class="mode" data-mode="dry"> <i class="fa-solid fa-wind"></i><div class="small">Dry</div></div>
+      </div>
+
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="small">Humidity</div><div class="small" id="humValue">60%</div></div>
+        <div class="humidity">
+          <div class="slider"><input type="range" id="humRange" min="0" max="100" value="60"></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="small">Air Quality</div><div class="small">Good</div></div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <div style="flex:1;padding:12px;border-radius:10px;border:1px solid #eee;text-align:center">
+            <div class="small">Moderate</div>
+            <strong>CO₂ 874 ppm</strong>
+          </div>
+          <div style="flex:1;padding:12px;border-radius:10px;border:1px solid #eee;text-align:center">
+            <div class="small">Excellent</div>
+            <strong>Pollutants 60 AQI</strong>
+          </div>
+        </div>
+      </div>
+    </aside>
+    {% endblock %}
+
+  </div>
+
+  {% block scripts %}
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="{{ url_for('ha.static', filename='js/ha.js') }}"></script>
+  {% endblock %}
+
+</body>
+</html>

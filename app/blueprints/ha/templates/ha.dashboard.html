@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Smart Home Dashboard</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('ha.static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="avatar">BR</div>
+        <div>
+          <div style="font-weight:600">Brett Royer</div>
+          <div class="small">Welcome back</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="#"><i class="fa-solid fa-door-open"></i> Rooms</a>
+        <a href="#"><i class="fa-solid fa-clock-rotate-left"></i> Recent</a>
+        <a href="#"><i class="fa-solid fa-bookmark"></i> Bookmark</a>
+        <a href="#"><i class="fa-solid fa-bell"></i> Notification</a>
+        <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="top-row">
+        <div style="flex:1">
+          <h3 style="margin:0 0 12px 0">My Devices</h3>
+          <div class="cards" id="deviceCards"></div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="list wide-card" style="min-height:160px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div class="small">Usage Status</div>
+            <div class="small">Today</div>
+          </div>
+          <div id="miniChart" class="bar-chart"></div>
+          <div style="text-align:right;margin-top:6px"><strong>35.02kwh</strong> <span class="small">This month</span></div>
+        </div>
+
+        <div class="list">
+          <div class="small">Appliances</div>
+          <div class="appliances" id="applianceList"></div>
+        </div>
+
+        <div class="list">
+          <div class="small">Device Power Consumption</div>
+          <ul style="padding-left:14px;margin:6px 0 0 0;color:#333">
+            <li>Air Condition - 52kw</li>
+            <li>Smart Lamp - 12kw</li>
+            <li>Smart TV - 21kw</li>
+            <li>Speaker - 42kw</li>
+          </ul>
+        </div>
+
+        <div class="list">
+          <div class="small">Occupants</div>
+          <div class="people" id="peopleRow"></div>
+        </div>
+      </div>
+
+    </main>
+
+    <aside class="panel">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">Temperature</div>
+          <div class="small">...</div>
+        </div>
+        <div class="knob">
+          <div class="dial" id="tempDial">22&deg;</div>
+        </div>
+      </div>
+
+      <div class="modes">
+        <div class="mode" data-mode="heat"> <i class="fa-solid fa-fire"></i><div class="small">Heating</div></div>
+        <div class="mode" data-mode="cool"> <i class="fa-solid fa-snowflake"></i><div class="small">Cooling</div></div>
+        <div class="mode" data-mode="dry"> <i class="fa-solid fa-wind"></i><div class="small">Dry</div></div>
+      </div>
+
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="small">Humidity</div><div class="small" id="humValue">60%</div></div>
+        <div class="humidity">
+          <div class="slider"><input type="range" id="humRange" min="0" max="100" value="60"></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="small">Air Quality</div><div class="small">Good</div></div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <div style="flex:1;padding:12px;border-radius:10px;border:1px solid #eee;text-align:center">
+            <div class="small">Moderate</div>
+            <strong>CO₂ 874 ppm</strong>
+          </div>
+          <div style="flex:1;padding:12px;border-radius:10px;border:1px solid #eee;text-align:center">
+            <div class="small">Excellent</div>
+            <strong>Pollutants 60 AQI</strong>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="{{ url_for('ha.static', filename='js/ha.js') }}"></script>
+</body>
+</html>

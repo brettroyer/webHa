@@ -1,0 +1,52 @@
+{% extends "ha.base.html" %}
+
+{% block styles %}
+  {{ super() }}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+    <main class="main">
+      <div class="top-row">
+        <div style="flex:1">
+          <h3 style="margin:0 0 12px 0">My Devices</h3>
+          <div class="cards" id="deviceCards"></div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="list wide-card" style="min-height:160px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div class="small">Usage Status</div>
+            <div class="small">Today</div>
+          </div>
+          <div id="miniChart" class="bar-chart"></div>
+          <div style="text-align:right;margin-top:6px"><strong>35.02kwh</strong> <span class="small">This month</span></div>
+        </div>
+
+        <div class="list">
+          <div class="small">Appliances</div>
+          <div class="appliances" id="applianceList"></div>
+        </div>
+
+        <div class="list">
+          <div class="small">Device Power Consumption</div>
+          <ul style="padding-left:14px;margin:6px 0 0 0;color:#333">
+            <li>Air Condition - 52kw</li>
+            <li>Smart Lamp - 12kw</li>
+            <li>Smart TV - 21kw</li>
+            <li>Speaker - 42kw</li>
+          </ul>
+        </div>
+
+        <div class="list">
+          <div class="small">Occupants</div>
+          <div class="people" id="peopleRow"></div>
+        </div>
+      </div>
+    </main>
+
+{% endblock %}
