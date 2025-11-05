@@ -378,4 +378,19 @@ $(function() {
 
     // initial state log
     log('Automation UI ready');
+
+    $(".example").inputCounter({
+    selectors: {
+        addButtonSelector: '.btn-add',
+        subtractButtonSelector: '.btn-subtract',
+        inputSelector: '.input-counter',
+
+            // check the valus is within the min and max values
+            checkValue: true,
+
+            // is read only?
+            isReadOnly: true
+  }
+});
+
 });

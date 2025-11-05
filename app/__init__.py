@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_login import LoginManager
-from .models import load_user, _users
+from app.blueprints.auth.models import load_user, _users
 from .worker import worker
 
 login_manager = LoginManager()
