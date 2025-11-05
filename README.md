@@ -2,9 +2,6 @@
 
 ## 📂 Project Structure
 
----
-
-## 📂 Project Structure
 
 ```
 webHa/

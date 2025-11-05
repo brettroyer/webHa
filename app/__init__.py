@@ -22,6 +22,9 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(ha_bp)
 
+    from app.blueprints.ha_templates import bp as ha_templates
+    app.register_blueprint(ha_templates)
+
     # Start background worker (idle until started)
     _ = worker
 

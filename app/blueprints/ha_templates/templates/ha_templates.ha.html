@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Automation Controls — Dark Mode + SVG Knob + Export + MIDI</title>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('ha_templates.static', filename='css/style.css') }}">
+</head>
+<body data-theme="">
+<div style="max-width:1200px;margin:12px auto;padding:8px 16px;display:flex;justify-content:space-between;align-items:center">
+  <div><strong style="font-size:18px">Automation Controls — Dark + SVG Knob + Export + MIDI</strong></div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="btn" id="themeToggle">Toggle Dark</button>
+    <button class="btn" id="midiEnable">Enable MIDI</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- left: controls -->
+  <div class="panel">
+    <div class="topbar">
+      <h2>Controls</h2>
+      <div style="display:flex;gap:8px">
+        <button class="btn primary" id="btnStart">Start</button>
+        <button class="btn" id="btnStop">Stop</button>
+      </div>
+    </div>
+
+    <section style="margin-bottom:10px">
+      <div class="row">
+        <div class="col">
+          <h3 style="font-size:14px;margin:0 0 8px">Power</h3>
+          <div class="control-block">
+            <div class="switch on" id="swMain"><div class="knob"></div></div>
+            <div>Main Power</div>
+            <div style="margin-left:auto"><button class="btn" id="btnHold">Hold</button></div>
+          </div>
+        </div>
+
+        <div style="width:260px">
+          <h3 style="font-size:14px;margin:0 0 8px">Fan</h3>
+          <div class="seg" id="segFan">
+            <button data-val="1">Low</button>
+            <button data-val="2" class="active">Med</button>
+            <button data-val="3">High</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-bottom:10px">
+      <h3 style="font-size:14px;margin:0 0 8px">Sliders</h3>
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="flex:1">
+          <label>Temperature Setpoint: <span id="lblTemp">22</span> °C</label>
+          <div class="range-wrap"><input type="range" id="sliderTemp" min="10" max="30" value="22"></div>
+        </div>
+
+        <div style="width:220px">
+          <label>Brightness</label>
+          <div class="range-wrap"><input type="range" id="sliderBright" min="0" max="100" value="65"></div>
+        </div>
+      </div>
+
+      <div style="height:8px"></div>
+
+      <div class="combo">
+        <div style="flex:1">
+          <input type="range" id="comboMin" min="0" max="100" value="20">
+          <input type="range" id="comboMax" min="0" max="100" value="80" style="margin-top:-28px;position:relative">
+        </div>
+        <div class="values">Min: <span id="comboMinVal">20</span><br>Max: <span id="comboMaxVal">80</span></div>
+      </div>
+    </section>
+
+    <section style="margin-bottom:10px">
+      <h3 style="font-size:14px;margin:0 0 8px">Pressure & Retries</h3>
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="flex:1">
+          <label>Pressure Range</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="range" id="rangeLow" min="0" max="200" value="40">
+            <input type="range" id="rangeHigh" min="0" max="200" value="160">
+          </div>
+          <div style="margin-top:8px">Low: <span id="labelLow">40</span> - High: <span id="labelHigh">160</span></div>
+        </div>
+
+        <div style="width:160px;text-align:center">
+          <label>Retries</label>
+          <div class="stepper" style="margin-top:6px">
+            <button id="dec">-</button>
+            <div class="value" id="stepVal">5</div>
+            <button id="inc">+</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-bottom:10px">
+      <h3 style="font-size:14px;margin:0 0 8px">Rotary Knob (SVG) — drag / keyboard / MIDI</h3>
+      <div style="display:flex;gap:12px;align-items:center">
+        <!-- SVG knob -->
+        <div tabindex="0" id="svgKnobWrap" style="display:flex;flex-direction:column;align-items:center">
+          <svg class="knob-svg" id="svgKnob" viewBox="-60 -60 120 120" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+            <!-- base ring -->
+            <defs>
+              <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity="1"/>
+                <stop offset="1" stop-color="#cfd8e3" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <circle r="48" fill="url(#g1)" stroke="var(--border)" stroke-width="1.5"></circle>
+            <!-- tick marks -->
+            <g id="ticks"></g>
+            <!-- pointer -->
+            <g id="pointer" transform="rotate(-90)">
+              <rect x="-2" y="-36" width="4" height="36" rx="2" fill="var(--accent)"></rect>
+              <circle cx="0" cy="-38" r="3.5" fill="var(--accent)"></circle>
+            </g>
+            <!-- center cap -->
+            <circle r="18" fill="var(--card)" stroke="var(--border)" stroke-width="1"></circle>
+            <text id="knobValue" x="0" y="6" text-anchor="middle" font-size="10" fill="var(--text)" font-weight="700">50</text>
+          </svg>
+          <div style="font-size:13px;color:var(--muted);margin-top:6px">Setpoint</div>
+        </div>
+
+        <div style="flex:1">
+          <div style="font-size:13px;color:var(--muted)">Humidity (slider)</div>
+          <input type="range" id="humidityRange" min="20" max="90" value="60">
+          <div style="margin-top:8px">Humidity: <b id="humidityVal">60%</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h3 style="font-size:14px;margin:0 0 8px">Quick Actions</h3>
+      <div class="row">
+        <div class="btn" id="btnPulse">Pulse (momentary)</div>
+        <div class="btn" id="btnDebug">Debug</div>
+        <div class="btn" id="btnClear">Clear Log</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- right: status + export -->
+  <div class="panel">
+    <h2>Status & Export</h2>
+    <div class="status" style="margin-top:6px">
+      <div>Power: <b id="stPower">ON</b></div>
+      <div>Mode: <b id="stMode">Idle</b></div>
+      <div>Temp SP: <b id="stTemp">22°C</b></div>
+      <div>Fan: <b id="stFan">Med</b></div>
+      <div>Brightness: <b id="stBright">65%</b></div>
+      <div>Knob: <b id="stKnob">50</b></div>
+      <div>Pressure: <b id="stPressure">40 - 160</b></div>
+      <div>Retries: <b id="stRetries">5</b></div>
+    </div>
+
+    <div class="export-area">
+      <button class="btn primary" id="btnExport">Copy JSON</button>
+      <button class="btn" id="btnDownload">Download .json</button>
+      <button class="btn" id="btnLoad">Load JSON</button>
+    </div>
+
+    <textarea class="snip" id="snippet" placeholder="Exported JSON will appear here..." readonly></textarea>
+
+    <div style="margin-top:8px">
+      <div style="display:flex;gap:8px">
+        <button class="btn" id="btnCopy">Copy snippet</button>
+        <button class="btn" id="btnPaste">Paste into UI</button>
+      </div>
+      <div class="footer-note">Note: WebMIDI requires secure origin (https or localhost) and permission. Theme persists between reloads.</div>
+    </div>
+
+    <div style="height:12px"></div>
+    <div style="font-size:13px;color:var(--muted)"><strong>Log</strong></div>
+    <div id="log" style="height:220px;overflow:auto;border-radius:8px;padding:8px;background:transparent;margin-top:8px;border:1px solid var(--border);font-size:13px"></div>
+  </div>
+</div>
+<script src="{{ url_for('ha_templates.static', filename='js/base.js') }}"></script>
+</body>
+</html>
