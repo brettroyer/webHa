@@ -28,18 +28,18 @@ $(function() {
     logContainer.prepend($('<div>').text(msg));
   }
 
-  $('#startBtn').click(() => $.post('/api/start'));
-  $('#stopBtn').click(() => $.post('/api/stop'));
+  $('#startBtn').click(() => $.post('/cntl/api/start'));
+  $('#stopBtn').click(() => $.post('/cntl/api/stop'));
   $('#applyBtn').click(() => {
     $.ajax({
-      url:'/api/params',
+      url:'/cntl/api/params',
       method:'POST',
       contentType:'application/json',
       data: JSON.stringify({setpoint: $('#setpointInput').val()})
     });
   });
 
-  const sse = new EventSource('/stream');
+  const sse = new EventSource('/cntl/stream');
 
       sse.addEventListener('logs', e => {
         const logs = JSON.parse(e.data);

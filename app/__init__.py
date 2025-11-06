@@ -16,7 +16,7 @@ def create_app():
 
     # register blueprints
     from app.blueprints.auth.auth import auth_bp
-    from app.blueprints.main.main import main_bp
+    from app.blueprints.main import main_bp
     from app.blueprints.ha import ha_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
@@ -24,6 +24,9 @@ def create_app():
 
     from app.blueprints.ha_templates import bp as ha_templates
     app.register_blueprint(ha_templates)
+
+    from app.blueprints.cntl import bp as cntl
+    app.register_blueprint(cntl)
 
     # Start background worker (idle until started)
     _ = worker

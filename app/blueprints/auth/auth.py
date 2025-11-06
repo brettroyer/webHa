@@ -8,16 +8,16 @@ auth_bp = Blueprint("auth", __name__)
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("main.index"))
+        return redirect(url_for("cntl.index"))
     if request.method == "POST":
         user = verify_credentials(request.form["username"], request.form["password"])
         if not user:
             flash("Invalid username or password", "danger")
-            return render_template("login.html")
+            return render_template("cntl.login.html")
         login_user(user)
         flash("Logged in successfully.", "success")
         return redirect(url_for("main.index"))
-    return render_template("login.html")
+    return render_template("cntl.login.html")
 
 
 @auth_bp.route("/logout")

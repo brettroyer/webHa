@@ -1,15 +1,23 @@
+import os.path
+
 from flask import Blueprint, render_template, jsonify, Response, request
 from flask_login import login_required, current_user
 import json, time
 from app.worker import worker
+__basedir__ = os.path.dirname(os.path.abspath(__file__))
 
-main_bp = Blueprint("main", __name__)
+bp = Blueprint("cntl",
+               __name__,
+               url_prefix='/cntl',
+               template_folder=os.path.join(__basedir__, 'templates'),
+               static_folder=os.path.join(__basedir__, 'static')
+               )
 
 
-@main_bp.route("/")
+@bp.route("/")
 @login_required
 def index():
-    return render_template("index.html", user=current_user)
+    return render_template("cntl.index.html", user=current_user)
 
 
 def event_stream():
@@ -22,27 +30,27 @@ def event_stream():
         time.sleep(1.0)
 
 
-@main_bp.route("/stream")
+@bp.route("/stream")
 @login_required
 def stream():
     return Response(event_stream(), mimetype="text/event-stream")
 
 
-@main_bp.route("/api/start", methods=["POST"])
+@bp.route("/api/start", methods=["POST"])
 @login_required
 def start():
     worker.start()
     return jsonify(worker.get_status())
 
 
-@main_bp.route("/api/stop", methods=["POST"])
+@bp.route("/api/stop", methods=["POST"])
 @login_required
 def stop():
     worker.stop()
     return jsonify(worker.get_status())
 
 
-@main_bp.route("/api/params", methods=["POST"])
+@bp.route("/api/params", methods=["POST"])
 @login_required
 def params():
     data = request.json or {}
@@ -50,13 +58,13 @@ def params():
     return jsonify(worker.get_status())
 
 
-@main_bp.route("/api/manual", methods=["POST"])
+@bp.route("/api/manual", methods=["POST"])
 @login_required
 def manual():
     return jsonify(worker.manual_step())
 
 
-@main_bp.route("/api/status")
+@bp.route("/api/status")
 @login_required
 def status():
     return jsonify(worker.get_status())
