@@ -39,17 +39,18 @@ $(function() {
     });
   });
 
-  const sse = new EventSource('/cntl/stream');
-
-      sse.addEventListener('logs', e => {
-        const logs = JSON.parse(e.data);
-        logs.forEach(l => appendLog(`${l.ts} - ${l.text}`));
-        });
-
-      sse.addEventListener('status', e => {
-        const d = JSON.parse(e.data);
-        if (d.status.sim_value !== undefined)
-          addData(new Date(d.ts * 1000).toLocaleTimeString(), d.status.sim_value);
-        });
+  // TODO: Redo to use socketIO
+  // const sse = new EventSource('/cntl/stream');
+  //
+  // sse.addEventListener('logs', e => {
+  //   const logs = JSON.parse(e.data);
+  //   logs.forEach(l => appendLog(`${l.ts} - ${l.text}`));
+  //   });
+  //
+  // sse.addEventListener('status', e => {
+  //   const d = JSON.parse(e.data);
+  //   if (d.status.sim_value !== undefined)
+  //     addData(new Date(d.ts * 1000).toLocaleTimeString(), d.status.sim_value);
+  //   });
 
 });

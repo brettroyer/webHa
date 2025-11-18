@@ -7,4 +7,4 @@ main_bp = Blueprint("main", __name__)
 @main_bp.route("/")
 @login_required
 def index():
-    return redirect(url_for('cntl.index'))
+    return redirect(url_for('igrill.index'))

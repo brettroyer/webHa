@@ -3,7 +3,7 @@ import os.path
 from flask import Blueprint, render_template, jsonify, Response, request
 from flask_login import login_required, current_user
 import json, time
-from app.worker import worker
+from ...worker import worker
 __basedir__ = os.path.dirname(os.path.abspath(__file__))
 
 bp = Blueprint("cntl",

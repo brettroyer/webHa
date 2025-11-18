@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MQTT Queue Test</title>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+  <h2>MQTT → Queue → Socket.IO</h2>
+  <div id="log"></div>
+
+  <script>
+    const socket = io();
+
+    socket.on("connect", () => console.log("Connected to Socket.IO"));
+
+    socket.on("mqtt_data", data => {
+      console.log("MQTT Data:", data);
+      document.getElementById("log").innerHTML += `<p>${data.payload}</p>`;
+    });
+  </script>
+</body>
+</html>

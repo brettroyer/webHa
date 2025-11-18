@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user
-from app.blueprints.auth.models import verify_credentials
+from ..auth.models import verify_credentials
+
 
 auth_bp = Blueprint("auth", __name__)
 

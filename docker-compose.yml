@@ -1,0 +1,56 @@
+# sudo cp default.env .env
+# https://github.com/mattkohl/docker-flask-celery-redis/blob/master/docker-compose.yml
+
+services:
+  webha:  # docker compose up -d --build web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    image: webha_web:latest
+    container_name: webha_web
+    labels:
+      - com.centurylinklabs.watchtower.enable=false
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Central
+    volumes:
+      - ${ROOT}:/app
+    ports:
+      - 8603:8603
+    restart: unless-stopped
+    depends_on:
+      - redis
+
+  redis:   # docker compose up -d --build redis
+    container_name: webha_redis
+    image: redis:alpine
+    ports:
+      - ${REDIS_PORT}:6379
+
+  db:   # docker compose up -d --build db
+    # https://medium.com/@yashpatel007/hosting-mysql-database-using-docker-on-raspberrypi-81810cfef63c
+    # sudo docker exec -it webapp_db /bin/bash
+    # mysql -uroot -p${MYSQL_ROOT_PASSWORD}
+    # show databases;
+    # show tables;
+    # describe probe;
+
+    container_name: webha_db
+    restart: unless-stopped
+    volumes:
+      - ${SQL_VOL}:/var/lib/mysql
+      - /home/bdroyer/Documents/webha/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      - TZ=US/Central
+      - MYSQL_USER=${SQL_USER}
+      - MYSQL_PASSWORD=${SQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${SQL_DBNAME}
+    image: mysql:latest
+    ports:
+      - ${SQL_PORT}:3306
+
+
+
+

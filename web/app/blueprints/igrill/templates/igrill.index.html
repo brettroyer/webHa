@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Temperature Dashboard (MQTT live)</title>
+    <link rel="stylesheet" href="{{ url_for('igrill.static', filename='css/styles.css') }}">
+
+</head>
+<body>
+    <h1>🌡 Temperature Dashboard (MQTT live)</h1>
+
+    <div class="container" id="gaugesContainer">
+        <!-- We'll create gauge boxes dynamically based on topics injected by Flask -->
+    </div>
+
+    <div id="trendContainer">
+        <canvas id="trendChart" height="120"></canvas>
+    </div>
+
+    <div id="eventLog">
+        <h3>📜 Event Log</h3>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jquery-knob -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- socket.io client (served by Flask-SocketIO) -->
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+
+    <script src="{{ url_for('igrill.static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
